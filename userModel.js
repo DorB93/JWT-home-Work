@@ -13,6 +13,7 @@ const userSchema = new mongoose.Schema({
 	password: {
 		type: String,
 		required: [true, "Please provide a password"],
+		// will not return the password to the client
 		select: false,
 	},
 });
