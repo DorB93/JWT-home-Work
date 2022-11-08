@@ -28,6 +28,7 @@ function createSendToken(user, statusCode, res) {
 		),
 		httpOnly: true,
 	};
+
 	// in production we need to make sure the only web can reach to our server
 	if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
 
@@ -55,7 +56,7 @@ async function authorization(req, res, next) {
 		}
 		// Verify the token with the SECRET
 		const data = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-
+		console.log(data);
 		// Get the user with the ID that pass in the token
 		const user = await User.findById({ _id: data.id });
 
@@ -76,14 +77,14 @@ async function login(req, res) {
 		const { email, password } = req.body;
 		// Check if email & password exist
 		if (!email || !password) {
-			throw new Error("Please provide email and password!", 400);
+			throw new Error("Please provide email and password!");
 		}
 		// Find user with the password that stor in mongoDB
 		const user = await User.findOne({ email }).select("+password");
 
 		// Check if that email belong to any user & if the password matchs
 		if (!user || !password === user.password) {
-			throw new Error("Incorrect userID or password");
+			throw new Error("Incorrect email or password");
 		}
 
 		createSendToken(user, 200, res);
