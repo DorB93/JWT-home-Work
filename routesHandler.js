@@ -83,7 +83,7 @@ async function login(req, res) {
 		const user = await User.findOne({ email }).select("+password");
 
 		// Check if that email belong to any user & if the password matchs
-		if (!user || !password === user.password) {
+		if (!user || !(await user.correctPassword(password, user.password))) {
 			throw new Error("Incorrect email or password");
 		}
 
