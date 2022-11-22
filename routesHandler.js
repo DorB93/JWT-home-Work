@@ -20,11 +20,11 @@ function createSendToken(user, statusCode, res) {
 		httpOnly: true,
 	};
 
+	// Sending the cookie to the client
+	res.cookie("jwt", token, cookieOptions);
 	// in production we need to make sure the only web can reach to our server
 	if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
 
-	// Sending the cookie to the client
-	res.cookie("jwt", token, cookieOptions);
 	// Remove the password from the rsponse
 	user.password = undefined;
 	// send the responde to the client
@@ -107,6 +107,24 @@ async function signup(req, res) {
 	}
 }
 
+async function logOut(req, res, next) {
+	try {
+		// Get the JWT from the cookis
+		const token = req.cookies.jwt;
+
+		const cookieOptions = {
+			expires: new Date(Date.now()),
+			httpOnly: true,
+		};
+		// Sending the cookie to the client
+		res.cookie("jwt", token, cookieOptions);
+
+		res.status(204).json({
+			status: "success",
+			message: "Log Out Complete",
+		});
+	} catch (err) {}
+}
 // Show something only to login users
 function showSecret(req, res) {
 	res.status(200).json({
@@ -120,4 +138,5 @@ module.exports = {
 	login,
 	signup,
 	showSecret,
+	logOut,
 };
