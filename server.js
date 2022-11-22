@@ -24,5 +24,5 @@ app.post("/login", routesHandler.login);
 app.get("/secret", routesHandler.authorization, routesHandler.showSecret);
 
 app.listen(2020, () => {
-	console.log(`App running on port: 127.0.0.1:${2020}...`);
+	console.log(`App running on port: 127.0.0.1:2020...`);
 });

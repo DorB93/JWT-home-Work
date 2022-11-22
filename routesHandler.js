@@ -2,17 +2,6 @@ const jwt = require("jsonwebtoken");
 const User = require("./userModel");
 
 /**
- *  function for creating jwt token
- * @param {String} id
- * @returns JWT token
- */
-function signToken(id) {
-	return jwt.sign({ id }, process.env.ACCESS_TOKEN_SECRET, {
-		expiresIn: process.env.TOKEN_EXPIRES,
-	});
-}
-
-/**
  * function for creating res for login & signup
  * @param {Object} user
  * @param {Number} statusCode
@@ -20,7 +9,9 @@ function signToken(id) {
  */
 function createSendToken(user, statusCode, res) {
 	// Create the token
-	const token = signToken(user._id);
+	const token = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET, {
+		expiresIn: process.env.TOKEN_EXPIRES,
+	});
 
 	const cookieOptions = {
 		expires: new Date(
@@ -123,6 +114,7 @@ function showSecret(req, res) {
 		message: `You know the secret! ${req.user.name}:)`,
 	});
 }
+
 module.exports = {
 	authorization,
 	login,
