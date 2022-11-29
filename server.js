@@ -8,21 +8,21 @@ const routesHandler = require("./routesHandler");
 // create the app
 const app = express();
 
-// global midlleware
+// global middleware
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors());
 
 // Connecting to MongoDB
 mongoose.connect("mongodb://localhost:27017/JWT_HW").then(() => {
-	console.log("MongoDB connected successfuly!");
+	console.log("MongoDB connected successfully!");
 });
 
 // the route that i am using
 app.post("/signup", routesHandler.signup);
 app.post("/login", routesHandler.login);
 app.get("/secret", routesHandler.authorization, routesHandler.showSecret);
-app.post("/logout", routesHandler.authorization, routesHandler.logOut);
+app.get("/logout", routesHandler.authorization, routesHandler.logOut);
 
 app.listen(2020, () => {
 	console.log(`App running on port: 127.0.0.1:2020...`);

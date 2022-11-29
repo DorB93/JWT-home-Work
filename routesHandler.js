@@ -25,9 +25,9 @@ function createSendToken(user, statusCode, res) {
 	// in production we need to make sure the only web can reach to our server
 	if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
 
-	// Remove the password from the rsponse
+	// Remove the password from the response
 	user.password = undefined;
-	// send the responde to the client
+	// send the responds to the client
 	res.status(statusCode).json({
 		status: "success",
 		data: {
@@ -38,10 +38,10 @@ function createSendToken(user, statusCode, res) {
 
 async function authorization(req, res, next) {
 	try {
-		// Get the JWT from the cookis
+		// Get the JWT from the cookies
 		const token = req.cookies.jwt;
 
-		// Chack if it exists
+		// Check if it exists
 		if (!token) {
 			throw new Error("Need to be logged in for getting access!");
 		}
@@ -73,7 +73,7 @@ async function login(req, res) {
 		// Find user with the password that stor in mongoDB
 		const user = await User.findOne({ email }).select("+password");
 
-		// Check if that email belong to any user & if the password matchs
+		// Check if that email belong to any user & if the password matches
 		if (!user || !(await user.correctPassword(password, user.password))) {
 			throw new Error("Incorrect email or password");
 		}
@@ -109,7 +109,7 @@ async function signup(req, res) {
 
 async function logOut(req, res, next) {
 	try {
-		// Get the JWT from the cookis
+		// Get the JWT from the cookies
 		const token = req.cookies.jwt;
 
 		const cookieOptions = {
